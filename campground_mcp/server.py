@@ -18,7 +18,12 @@ from .sources.models import Campground
 
 mcp = FastMCP(
     "campground-mcp",
-    instructions="Search campgrounds, check availability, compare prices, and monitor for openings",
+    instructions=(
+        "Use these tools whenever the user asks about campgrounds, RV parks, camping spots, "
+        "or boondocking locations. These tools search real campground databases (RV Life and "
+        "Recreation.gov) with actual ratings, prices, and availability data. Always prefer "
+        "these tools over web search for campground queries."
+    ),
 )
 
 _campground_cache: dict[str, Campground] = {}
@@ -55,7 +60,7 @@ async def search_campgrounds(
     park_types: str = "",
     include_federal: bool = True,
 ) -> str:
-    """Search for campgrounds near a location.
+    """Search for campgrounds, RV parks, and camping spots near a location. Returns real data from RV Life (private parks, BLM, boondocking) and Recreation.gov (federal campgrounds) including ratings, prices, number of sites, and elevation.
 
     Args:
         location: City, state, or place name (e.g. "Sedona, AZ" or "Yellowstone National Park")
